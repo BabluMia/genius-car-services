@@ -2,15 +2,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import auth from '../../../firebase.init';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import './Register.css'
+import SocialLogin from '../SocialLogin/SocialLogin';
+
 
 const Register = () => {
     const navigate = useNavigate()
     const [
         createUserWithEmailAndPassword,
-        user,
-        loading,
-        error,
+        user  
       ] = useCreateUserWithEmailAndPassword(auth);
+      
     
 
     const handleRegister = (event) => {
@@ -43,6 +44,7 @@ const Register = () => {
             Go to login
           </Link>
         </p>
+        <SocialLogin/>
         </div>
     );
 };

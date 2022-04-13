@@ -3,16 +3,16 @@ import { Button, Form } from "react-bootstrap";
 
 import { Link, useLocation, useNavigate, useNavigationType } from "react-router-dom";
 import auth from "../../../firebase.init";
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSignInWithEmailAndPassword} from 'react-firebase-hooks/auth';
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 
 const Login = () => {
   const [
     signInWithEmailAndPassword,
-    user,
-    loading,
-    error,
+    user
   ] = useSignInWithEmailAndPassword(auth);
+ 
   
   const emailRef = useRef("");
   const passwordRef = useRef("");
@@ -47,9 +47,6 @@ const Login = () => {
               type="email"
               placeholder="Enter email"
             />
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -77,6 +74,7 @@ const Login = () => {
             Register Now
           </Link>
         </p>
+        <SocialLogin/>
       </div>
     </div>
   );
