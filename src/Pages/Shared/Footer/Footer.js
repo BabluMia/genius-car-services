@@ -4,8 +4,8 @@ import './Footer.css'
 const Footer = () => {
     const year = new Date().getFullYear()
     return (
-        <footer>
-            <small>Copyright Goes To Bablu || {year}</small>
+        <footer className=' w-100 text-center  bottom-0'>
+            <small className=''>Copyright Goes To Bablu || {year}</small>
         </footer>
     );
 };
