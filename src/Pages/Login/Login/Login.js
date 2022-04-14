@@ -1,19 +1,21 @@
 import React, { useRef } from "react";
 import { Button, Form } from "react-bootstrap";
 
-import { Link, useLocation, useNavigate, useNavigationType } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../../firebase.init";
-import { useSignInWithEmailAndPassword} from 'react-firebase-hooks/auth';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword} from 'react-firebase-hooks/auth';
 import SocialLogin from "../SocialLogin/SocialLogin";
 
 
 const Login = () => {
   const [
     signInWithEmailAndPassword,
-    user
+    user, loading, error
   ] = useSignInWithEmailAndPassword(auth);
  
-  
+  const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(
+    auth
+  );
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const navigate = useNavigate()
@@ -21,6 +23,8 @@ const Login = () => {
   const location = useLocation()
 
   let from = location.state?.from?.pathname || "/";
+
+  let errorElement ;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -31,6 +35,19 @@ const Login = () => {
   };
   if(user){
     navigate(from, { replace: true });
+  }
+  if (error) {
+    errorElement = (
+      <div>
+        <p className="my-2">Error: {error?.message}</p>
+      </div>
+    );
+  }
+
+  const resetPassword = async () => {
+    const email = emailRef.current.value;
+    await sendPasswordResetEmail(email);
+    alert('Sent email');
   }
   
 
@@ -58,22 +75,30 @@ const Login = () => {
               placeholder="Password"
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-          </Form.Group>
-          <Button className="mb-3" variant="primary" type="submit">
-            Submit
+          
+          <Button className="mb-3 w-50 mx-auto d-block" variant="primary" type="submit">
+            Login
           </Button>
         </Form>
         <p>
           New to Genius Car ?{" "}
           <Link
-            className="text-danger text-text-decoration-none pe-auto"
+            className="text-danger text-decoration-none pe-auto"
              to='/register'
           >
             Register Now
           </Link>
         </p>
+        <p>
+          Forget Password ?{" "}
+          <Link
+            className="text-primary text-decoration-none pe-auto"
+             to='/' onClick={resetPassword}
+          >
+            Reset 
+          </Link>
+        </p>
+        {errorElement}
         <SocialLogin/>
       </div>
     </div>
