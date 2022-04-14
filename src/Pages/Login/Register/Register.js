@@ -11,7 +11,7 @@ const Register = () => {
     const navigate = useNavigate()
     const [
         createUserWithEmailAndPassword,
-        user  
+        user ,loading,error 
       ] = useCreateUserWithEmailAndPassword(auth ,{sendEmailVerification : true});
       
     
@@ -26,15 +26,18 @@ const Register = () => {
         
         await  createUserWithEmailAndPassword(email, password);
         await updateProfile({ displayName : name});
+        
         if(user){
-          console.log(user);
           navigate('/home')
+          console.log(user , error.messages);
+         
       }
         
         
       };
 
       if(user){
+        
           console.log(user);
       }
     return (
